@@ -6,3 +6,39 @@ datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
+// MODELANDO A TABELA DO BANCO DE DADOS
+model User {
+  id    String @id @default(uuid())
+  email String @unique
+  name  String
+  created_at DateTime @default(now())
+  updated_at DateTime
+  // DEFININDO O RELACIONAMENTO
+  movieRent MovieRent[] @relation("user")
+// DEFININDO O NOME DA TABELA
+  @@map("users")
+}
+
+model Movie {
+  id    String @id @default(uuid())
+  title String @unique
+  duration Int 
+  release_date DateTime
+  // DEFININDO O RELACIONAMENTO
+  movieRent MovieRent[] @relation("movie")
+
+  @@map("movies")
+}
+
+// RELACIONAMENTO DE TABELA MANY TO MANY
+model MovieRent {
+  user User @relation("user", fields: [userId], references: [id])
+  userId    String
+
+  movie Movie @relation("movie", fields: [movieId], references: [id])
+  movieId   String
+  // JUNÇÃO DE ID'S
+  @@id([userId, movieId])
+
+  @@map("movie_rent")
+}
