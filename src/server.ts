@@ -2,6 +2,7 @@ import "express-async-errors";
 import express, { Request, Response, NextFunction } from 'express';
 import { userRoutes } from './routes/user.routes';
 import { AppError } from "./errors/AppError";
+import { movieRoutes } from "./routes/movie.routes";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use((req, res, next) => {
 
 // Rotas
 app.use('/users',userRoutes);
+app.use('/movies',movieRoutes);
 
 // Middleware de erro
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
